@@ -8,4 +8,4 @@ router.get("/users/:userEmail", userController.getUserByEmail);
 
 router.post("/users", userController.createUser);
 
-export default router;
+export const userRouter = router;

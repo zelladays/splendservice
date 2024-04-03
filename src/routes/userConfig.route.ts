@@ -8,4 +8,4 @@ router.get("/user-config/:userId", userConfigController.getUserConfigById);
 
 router.post("/user-config", userConfigController.createNewUserConfig);
 
-export default router;
+export const userConfigRouter = router;

@@ -61,7 +61,7 @@ const deleteCollectionById = async (collectionId: string) => {
     }
 };
 
-export const collectionService = {
+export const collectionsService = {
     addNewCollection,
     getAllCollections,
     getCollectionByUserId,

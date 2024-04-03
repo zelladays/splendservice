@@ -8,4 +8,4 @@ router.get("/pots/:potId", potsController.getPotById);
 
 router.post("/pots", potsController.createNewPot);
 
-export default router;
+export const potsRouter = router;
