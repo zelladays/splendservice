@@ -19,6 +19,7 @@ async function getPotsByUserId(userId: string) {
             "SELECT pots.id FROM pots JOIN users ON pots.user_id = users.id WHERE users.id = $1",
             [userId]
         );
+
         return rows as Pot[];
     } catch (error) {
         console.error("Error retrieving pots:", error);

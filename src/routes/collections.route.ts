@@ -9,6 +9,7 @@ router.get(
 );
 router.get("/collection/:userId", collectionsController.getCollectionByUserId);
 
+router.post("/collection", collectionsController.createCollection);
 router.delete(
     "/collection/:collectionId",
     collectionsController.deleteCollectionById

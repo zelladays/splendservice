@@ -11,7 +11,7 @@ const AddPotSchema = zod.object({
 export type AddPot = zod.infer<typeof AddPotSchema>;
 
 export const parseAddPot = (pot: unknown) => {
-    return AddPotSchema.parse(pot);
+    return AddPotSchema.safeParse(pot);
 };
 
 const PotSchema = zod.object({

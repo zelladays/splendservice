@@ -15,6 +15,6 @@ export const AddCollection = zod.object({
 
 export type AddCollection = zod.infer<typeof AddCollection>;
 
-export const parseCollection = (collection: unknown) => {
-    return Collection.parse(collection);
+export const parseAddCollection = (collection: unknown) => {
+    return AddCollection.safeParse(collection);
 };

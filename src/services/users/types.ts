@@ -7,6 +7,6 @@ const AddUserSchema = z.object({
 
 export type User = z.infer<typeof AddUserSchema>;
 
-export const parseUser = (data: unknown): User => {
-    return AddUserSchema.parse(data);
+export const parseUser = (data: unknown) => {
+    return AddUserSchema.safeParse(data);
 };
