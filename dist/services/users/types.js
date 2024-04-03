@@ -23,13 +23,23 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseUser = void 0;
+exports.parseUser = exports.parseAddUser = void 0;
 const z = __importStar(require("zod"));
 const AddUserSchema = z.object({
     name: z.string(),
     email: z.string().email(),
 });
-const parseUser = (data) => {
+const parseAddUser = (data) => {
     return AddUserSchema.safeParse(data);
+};
+exports.parseAddUser = parseAddUser;
+const UserSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string().email(),
+    user_config_id: z.string(),
+});
+const parseUser = (data) => {
+    return UserSchema.safeParse(data);
 };
 exports.parseUser = parseUser;

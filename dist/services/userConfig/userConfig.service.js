@@ -35,7 +35,9 @@ async function updateUserConfig(config) {
 }
 async function getUserConfigById(configId) {
     try {
-        const config = await db_service_1.default.query("SELECT * FROM user_config WHERE id = $1", [configId]);
+        const config = await db_service_1.default.query("SELECT * FROM user_config WHERE id = $1", [
+            configId,
+        ]);
         return config.rows[0];
     }
     catch (error) {

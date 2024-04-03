@@ -1,38 +1,42 @@
 import express, { Request, Response, NextFunction } from "express";
 import { json, urlencoded } from "body-parser";
 import {
-    userRouter,
-    userConfigRouter,
-    potsRouter,
-    collectionsRouter,
+  userRouter,
+  userConfigRouter,
+  potsRouter,
+  collectionsRouter,
+  profileRouter,
 } from "./routes";
+import { userAuthenticationMiddleware } from "./middlewares";
 
 const app = express();
 const port = parseFloat(process.env.PORT as string) || 3001;
 
 app.use(json());
 app.use(
-    urlencoded({
-        extended: true,
-    })
+  urlencoded({
+    extended: true,
+  })
 );
 
 app.use((err, _req: Request, res: Response, _next: NextFunction) => {
-    const statusCode = err.statusCode || 500;
-    console.error(err.message, err.stack);
-    res.status(statusCode).json({ message: err.message });
-    return;
+  const statusCode = err.statusCode || 500;
+  console.error(err.message, err.stack);
+  res.status(statusCode).json({ message: err.message });
+  return;
 });
 
+app.use(userAuthenticationMiddleware);
 app.use("/", userRouter);
 app.use("/", userConfigRouter);
 app.use("/", potsRouter);
 app.use("/", collectionsRouter);
+app.use("/", profileRouter);
 
 app.get("/verify", (_, res) => {
-    res.json({ message: "API is working" });
+  res.json({ message: "API is working" });
 });
 
 app.listen(port, "0.0.0.0", () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port}`);
 });

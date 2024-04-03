@@ -1,10 +1,15 @@
 {
-    "compilerOptions": {
-        "target": "es2022",
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "moduleResolution": "node"
-    },
-    "include": ["/**/*.ts"],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "typeRoots": ["./express.d.ts"]
+  },
+  "ts-node": {
+    "files": true
+  },
+  "files": ["./express.d.ts"],
+  "include": ["/**/*.ts", "./express.d.ts"],
+  "exclude": ["node_modules"]
 }

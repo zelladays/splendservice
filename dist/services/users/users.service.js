@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userApplication = void 0;
+exports.usersService = void 0;
 const userConfig_1 = require("../userConfig");
 const db_service_1 = __importDefault(require("../db.service"));
 const uuid_1 = require("uuid");
@@ -41,7 +41,7 @@ async function getAllUsers() {
         throw error;
     }
 }
-exports.userApplication = {
+exports.usersService = {
     createUser,
     getUserByEmail,
     getAllUsers,

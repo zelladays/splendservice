@@ -18,3 +18,4 @@ __exportStar(require("./users"), exports);
 __exportStar(require("./userConfig"), exports);
 __exportStar(require("./pots"), exports);
 __exportStar(require("./collections"), exports);
+__exportStar(require("./profile"), exports);

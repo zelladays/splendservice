@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = require("body-parser");
 const routes_1 = require("./routes");
+const middlewares_1 = require("./middlewares");
 const app = (0, express_1.default)();
 const port = parseFloat(process.env.PORT) || 3001;
 app.use((0, body_parser_1.json)());
@@ -18,10 +19,12 @@ app.use((err, _req, res, _next) => {
     res.status(statusCode).json({ message: err.message });
     return;
 });
+app.use(middlewares_1.userAuthenticationMiddleware);
 app.use("/", routes_1.userRouter);
 app.use("/", routes_1.userConfigRouter);
 app.use("/", routes_1.potsRouter);
 app.use("/", routes_1.collectionsRouter);
+app.use("/", routes_1.profileRouter);
 app.get("/verify", (_, res) => {
     res.json({ message: "API is working" });
 });
