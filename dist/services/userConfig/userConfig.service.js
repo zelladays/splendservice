@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.userConfigService = void 0;
 const db_service_1 = __importDefault(require("../../configs/db.service"));
 const uuid_1 = require("uuid");
+const types_1 = require("./types");
 async function addNewUserConfig() {
     try {
         const configId = (0, uuid_1.v4)();
@@ -20,13 +21,13 @@ async function addNewUserConfig() {
 async function updateUserConfig(config) {
     try {
         const result = await db_service_1.default.query("UPDATE user_config SET saving_interval = $1, current_savings = $2, lifetime_savings = $3, saving_interval_amount = $4 WHERE id = $5", [
-            config.savingsInterval,
+            config.savingIntervalDuration,
             config.currentSavings,
             config.lifetimeSavings,
-            config.savingAmountInterval,
+            config.savingIntervalAmount,
             config.id,
         ]);
-        return result.rows[0];
+        return types_1.userConfigMapper.from(result.rows[0]);
     }
     catch (error) {
         console.error("Error updating config:", error);
@@ -38,7 +39,7 @@ async function getUserConfigById(configId) {
         const config = await db_service_1.default.query("SELECT * FROM user_config WHERE id = $1", [
             configId,
         ]);
-        return config.rows[0];
+        return types_1.userConfigMapper.from(config.rows[0]);
     }
     catch (error) {
         console.error("Error retrieving config:", error);
@@ -48,7 +49,7 @@ async function getUserConfigById(configId) {
 async function getAllUserConfigs() {
     try {
         const config = await db_service_1.default.query("SELECT * FROM user_config", []);
-        return config.rows;
+        return config.rows.map((c) => types_1.userConfigMapper.from(c));
     }
     catch (error) {
         console.error("Error retrieving config:", error);

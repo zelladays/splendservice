@@ -2,8 +2,33 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.potsController = void 0;
 const services_1 = require("../../services");
+const getPots = async (req, res) => {
+    try {
+        const { userId } = req.userContext;
+        if (!userId) {
+            res.status(401).send({
+                errorMessage: "User ID is required.",
+            });
+            return;
+        }
+        const pots = await services_1.potService.getPotsByUserId(userId);
+        res.status(200).json(pots);
+    }
+    catch (error) {
+        res.status(500).send({
+            errorMessage: "Internal server error: " + JSON.stringify(error),
+        });
+    }
+};
 const getPotById = async (req, res) => {
     try {
+        const { userId } = req.userContext;
+        if (!userId) {
+            res.status(401).send({
+                errorMessage: "User ID is required.",
+            });
+            return;
+        }
         const potId = req.params.potId;
         if (!potId) {
             res.status(400).send({
@@ -11,7 +36,7 @@ const getPotById = async (req, res) => {
             });
             return;
         }
-        const pot = await services_1.potService.getPotById(potId);
+        const pot = await services_1.potService.getPotById(potId, userId);
         if (!pot) {
             res.status(404).send({
                 errorMessage: "Pot not found.",
@@ -28,14 +53,21 @@ const getPotById = async (req, res) => {
 };
 const getPotsByUserId = async (req, res) => {
     try {
-        const userId = req.params.userId;
-        if (!userId) {
+        const reqUserId = req.params.userId;
+        if (!reqUserId) {
             res.status(400).send({
                 errorMessage: "User ID is required.",
             });
             return;
         }
-        const pot = await services_1.potService.getPotsByUserId(userId);
+        const { userId, userRole } = req.userContext;
+        if (!userId || userRole !== "SUPER_ADMIN") {
+            res.status(403).send({
+                errorMessage: "Unauthorized.",
+            });
+            return;
+        }
+        const pot = await services_1.potService.getPotsByUserId(reqUserId);
         res.status(200).json(pot);
     }
     catch (error) {
@@ -63,6 +95,7 @@ const createNewPot = async (req, res) => {
     }
 };
 exports.potsController = {
+    getPots,
     getPotById,
     getPotsByUserId,
     createNewPot,

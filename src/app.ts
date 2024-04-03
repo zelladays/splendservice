@@ -10,7 +10,7 @@ import {
 } from "./routes";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { userAuthenticationMiddleware } from "./middlewares";
+import { userAuthenticationMiddleware, userContext } from "./middlewares";
 
 const app = express();
 const port = parseFloat(process.env.PORT as string) || 3001;
@@ -33,9 +33,10 @@ app.use((err, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 app.use("/", authRouter);
+app.use("/", userRouter);
 
 app.use(userAuthenticationMiddleware);
-app.use("/", userRouter);
+app.use(userContext);
 app.use("/", userConfigRouter);
 app.use("/", potsRouter);
 app.use("/", collectionsRouter);

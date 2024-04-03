@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.parseUser = exports.parseAddUser = void 0;
+exports.userMapper = exports.parseUser = exports.parseAddUser = void 0;
 const z = __importStar(require("zod"));
 const AddUserSchema = z.object({
     name: z.string(),
@@ -33,13 +33,45 @@ const parseAddUser = (data) => {
     return AddUserSchema.safeParse(data);
 };
 exports.parseAddUser = parseAddUser;
+const DBUserSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    email: z.string().email(),
+    role: z.union([
+        z.literal("SUPER_ADMIN"),
+        z.literal("ADMIN"),
+        z.literal("USER"),
+    ]),
+    user_config_id: z.string(),
+});
 const UserSchema = z.object({
     id: z.string(),
     name: z.string(),
     email: z.string().email(),
-    user_config_id: z.string(),
+    role: z.union([
+        z.literal("SUPER_ADMIN"),
+        z.literal("ADMIN"),
+        z.literal("USER"),
+    ]),
+    userConfigId: z.string(),
 });
 const parseUser = (data) => {
     return UserSchema.safeParse(data);
 };
 exports.parseUser = parseUser;
+exports.userMapper = {
+    from: (user) => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        userConfigId: user.user_config_id,
+    }),
+    to: (user) => ({
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        user_config_id: user.userConfigId,
+    }),
+};

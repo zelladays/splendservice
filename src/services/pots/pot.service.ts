@@ -3,9 +3,12 @@ import db from "../../configs/db.service";
 import { AddPot, Pot } from "./types";
 import { potProgressService } from "../potProgress";
 
-async function getPotById(potId: string) {
+async function getPotById(potId: string, userId: string) {
   try {
-    const pot = await db.query("SELECT * FROM pots WHERE id = $1", [potId]);
+    const pot = await db.query(
+      "SELECT * FROM pots WHERE id = $1 AND user_id = $2",
+      [potId, userId]
+    );
     return pot.rows[0] as Pot;
   } catch (error) {
     console.error("Error retrieving pot:", error);

@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersService = void 0;
 const userConfig_1 = require("../userConfig");
 const db_service_1 = __importDefault(require("../../configs/db.service"));
+const types_1 = require("./types");
 const uuid_1 = require("uuid");
 async function createUser(user) {
     try {
@@ -24,7 +25,7 @@ async function getUserByEmail(userEmail) {
         const user = await db_service_1.default.query('SELECT * FROM "users" WHERE email = $1', [
             userEmail,
         ]);
-        return user.rows[0];
+        return types_1.userMapper.from(user.rows[0]);
     }
     catch (error) {
         console.error("Error retrieving user:", error);

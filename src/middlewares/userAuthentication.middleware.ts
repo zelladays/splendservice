@@ -38,7 +38,8 @@ export const userAuthenticationMiddleware = async (
     }
 
     const email = payload.email;
-    req["email"] = email;
+    req.userContext = req.userContext || {};
+    req.userContext.userEmail = email;
 
     next();
   } catch (error) {

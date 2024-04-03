@@ -1,13 +1,15 @@
 import { Request } from "express";
 
 type UserContext = {
-  email?: string;
+  userId?: string;
+  userEmail?: string;
+  userRole?: "SUPER_ADMIN" | "ADMIN" | "USER";
 };
 
 declare global {
   namespace Express {
     interface Request {
-      ctx?: UserContext;
+      userContext?: UserContext;
     }
   }
 }

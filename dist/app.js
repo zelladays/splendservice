@@ -24,8 +24,9 @@ app.use((err, _req, res, _next) => {
     return;
 });
 app.use("/", routes_1.authRouter);
-app.use(middlewares_1.userAuthenticationMiddleware);
 app.use("/", routes_1.userRouter);
+app.use(middlewares_1.userAuthenticationMiddleware);
+app.use(middlewares_1.userContext);
 app.use("/", routes_1.userConfigRouter);
 app.use("/", routes_1.potsRouter);
 app.use("/", routes_1.collectionsRouter);

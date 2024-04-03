@@ -1,6 +1,6 @@
 import { userConfigService } from "../userConfig";
 import db from "../../configs/db.service";
-import { AddUser, User } from "./types";
+import { AddUser, User, userMapper } from "./types";
 import { v4 } from "uuid";
 
 async function createUser(user: AddUser) {
@@ -23,7 +23,7 @@ async function getUserByEmail(userEmail: string) {
     const user = await db.query('SELECT * FROM "users" WHERE email = $1', [
       userEmail,
     ]);
-    return user.rows[0] as User;
+    return userMapper.from(user.rows[0] as User);
   } catch (error) {
     console.error("Error retrieving user:", error);
     throw error;

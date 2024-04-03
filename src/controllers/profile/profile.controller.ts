@@ -3,14 +3,16 @@ import { profileService } from "../../services";
 
 const getProfile = async (req: Request, res: Response) => {
   try {
-    if (!req.ctx.email) {
+    const { userEmail } = req.userContext;
+
+    if (!userEmail) {
       res.status(401).send({
         errorMessage: "User is not authenticated.",
       });
       return;
     }
 
-    const profile = await profileService.getProfile(req.ctx.email);
+    const profile = await profileService.getProfile(userEmail);
 
     if (!profile) {
       res.status(404).send({

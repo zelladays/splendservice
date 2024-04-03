@@ -7,9 +7,9 @@ exports.potService = void 0;
 const uuid_1 = require("uuid");
 const db_service_1 = __importDefault(require("../../configs/db.service"));
 const potProgress_1 = require("../potProgress");
-async function getPotById(potId) {
+async function getPotById(potId, userId) {
     try {
-        const pot = await db_service_1.default.query("SELECT * FROM pots WHERE id = $1", [potId]);
+        const pot = await db_service_1.default.query("SELECT * FROM pots WHERE id = $1 AND user_id = $2", [potId, userId]);
         return pot.rows[0];
     }
     catch (error) {

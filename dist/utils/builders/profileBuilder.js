@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.profileBuilder = void 0;
-const buildProfile = (data) => {
+const buildProfile = (user, config) => {
     return {
-        name: data.name,
-        email: data.email,
-        savingsInterval: data.savingsInterval,
-        currentSavings: data.currentSavings,
-        lifetimeSavings: data.lifetimeSavings,
-        savingAmountInterval: data.savingAmountInterval,
+        name: user.name,
+        email: user.email,
+        savingsInterval: config.savingIntervalDuration,
+        currentSavings: config.currentSavings,
+        lifetimeSavings: config.lifetimeSavings,
+        savingAmountInterval: config.savingIntervalAmount,
     };
 };
 exports.profileBuilder = {

@@ -6,11 +6,11 @@ const services_1 = require("../../services");
 const getProfile = async (userEmail) => {
     try {
         const user = await services_1.usersService.getUserByEmail(userEmail);
-        const config = await services_1.userConfigService.getUserConfigById(user.user_config_id);
+        const config = await services_1.userConfigService.getUserConfigById(user.userConfigId);
         if (!user || !config) {
             return null;
         }
-        return utils_1.profileBuilder.buildProfile({ ...user, ...config });
+        return utils_1.profileBuilder.buildProfile(user, config);
     }
     catch (error) {
         console.error("Internal server error:", error);

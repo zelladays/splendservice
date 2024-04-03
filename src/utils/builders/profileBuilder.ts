@@ -1,13 +1,13 @@
 import { User, UserConfig } from "../../services";
 
-const buildProfile = (data: User & UserConfig) => {
+const buildProfile = (user: User, config: UserConfig) => {
   return {
-    name: data.name,
-    email: data.email,
-    savingsInterval: data.savingsInterval,
-    currentSavings: data.currentSavings,
-    lifetimeSavings: data.lifetimeSavings,
-    savingAmountInterval: data.savingAmountInterval,
+    name: user.name,
+    email: user.email,
+    savingsInterval: config.savingIntervalDuration,
+    currentSavings: config.currentSavings,
+    lifetimeSavings: config.lifetimeSavings,
+    savingAmountInterval: config.savingIntervalAmount,
   };
 };
 

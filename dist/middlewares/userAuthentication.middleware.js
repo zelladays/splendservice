@@ -26,7 +26,8 @@ const userAuthenticationMiddleware = async (req, res, next) => {
             throw new Error("Email not found in token payload");
         }
         const email = payload.email;
-        req["email"] = email;
+        req.userContext = req.userContext || {};
+        req.userContext.userEmail = email;
         next();
     }
     catch (error) {
