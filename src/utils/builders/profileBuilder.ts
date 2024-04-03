@@ -1,4 +1,4 @@
-import { User, UserConfig } from "../services";
+import { User, UserConfig } from "../../services";
 
 const buildProfile = (data: User & UserConfig) => {
   return {

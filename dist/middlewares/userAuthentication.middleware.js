@@ -7,10 +7,10 @@ exports.userAuthenticationMiddleware = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
 const google_auth_library_1 = require("google-auth-library");
 dotenv_1.default.config();
-const oAuth2Client = new google_auth_library_1.OAuth2Client(process.env.CLIENT_ID, process.env.CLIENT_SECRET, "postmessage");
+const oAuth2Client = new google_auth_library_1.OAuth2Client(process.env.OAUTH_CLIENT_ID, process.env.OAUTH_CLIENT_SECRET, "postmessage");
 const userAuthenticationMiddleware = async (req, res, next) => {
     try {
-        const token = req.cookies.authToken;
+        const token = req.cookies["SPLEND_AUTH_TOKEN"];
         if (!token) {
             throw new Error("Authorization token not provided");
         }

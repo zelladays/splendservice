@@ -1,5 +1,5 @@
 import { userConfigService } from "../userConfig";
-import db from "../db.service";
+import db from "../../configs/db.service";
 import { AddUser, User } from "./types";
 import { v4 } from "uuid";
 

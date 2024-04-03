@@ -1,4 +1,4 @@
-import { profileBuilder } from "../../builder";
+import { profileBuilder } from "../../utils";
 import { usersService, userConfigService } from "../../services";
 
 const getProfile = async (userEmail: string) => {
@@ -7,6 +7,10 @@ const getProfile = async (userEmail: string) => {
     const config = await userConfigService.getUserConfigById(
       user.user_config_id
     );
+
+    if (!user || !config) {
+      return null;
+    }
 
     return profileBuilder.buildProfile({ ...user, ...config });
   } catch (error) {

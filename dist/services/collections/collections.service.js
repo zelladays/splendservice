@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.collectionsService = void 0;
-const db_service_1 = __importDefault(require("../db.service"));
+const db_service_1 = __importDefault(require("../../configs/db.service"));
 const uuid_1 = require("uuid");
 const addNewCollection = async (collectionInput) => {
     try {

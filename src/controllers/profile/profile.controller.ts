@@ -12,6 +12,13 @@ const getProfile = async (req: Request, res: Response) => {
 
     const profile = await profileService.getProfile(req.ctx.email);
 
+    if (!profile) {
+      res.status(404).send({
+        errorMessage: "Profile not found.",
+      });
+      return;
+    }
+
     res.status(200).json(profile);
   } catch (error) {
     res.status(500).send({

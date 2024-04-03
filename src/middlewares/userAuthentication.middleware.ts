@@ -5,8 +5,8 @@ import { OAuth2Client } from "google-auth-library";
 dotenv.config();
 
 const oAuth2Client = new OAuth2Client(
-  process.env.CLIENT_ID,
-  process.env.CLIENT_SECRET,
+  process.env.OAUTH_CLIENT_ID,
+  process.env.OAUTH_CLIENT_SECRET,
   "postmessage"
 );
 
@@ -16,7 +16,7 @@ export const userAuthenticationMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    const token = req.cookies.authToken;
+    const token = req.cookies["SPLEND_AUTH_TOKEN"];
 
     if (!token) {
       throw new Error("Authorization token not provided");

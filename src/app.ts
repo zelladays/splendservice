@@ -6,7 +6,10 @@ import {
   potsRouter,
   collectionsRouter,
   profileRouter,
+  authRouter,
 } from "./routes";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import { userAuthenticationMiddleware } from "./middlewares";
 
 const app = express();
@@ -18,6 +21,9 @@ app.use(
     extended: true,
   })
 );
+app.use(cors({ credentials: true, origin: process.env.APP_URL }));
+
+app.use(cookieParser());
 
 app.use((err, _req: Request, res: Response, _next: NextFunction) => {
   const statusCode = err.statusCode || 500;
@@ -25,6 +31,8 @@ app.use((err, _req: Request, res: Response, _next: NextFunction) => {
   res.status(statusCode).json({ message: err.message });
   return;
 });
+
+app.use("/", authRouter);
 
 app.use(userAuthenticationMiddleware);
 app.use("/", userRouter);

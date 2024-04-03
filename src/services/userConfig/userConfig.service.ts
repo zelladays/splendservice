@@ -1,4 +1,4 @@
-import db from "../db.service";
+import db from "../../configs/db.service";
 import { v4 } from "uuid";
 import { UserConfig } from "./types";
 

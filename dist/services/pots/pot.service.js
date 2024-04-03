@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.potService = void 0;
 const uuid_1 = require("uuid");
-const db_service_1 = __importDefault(require("../db.service"));
+const db_service_1 = __importDefault(require("../../configs/db.service"));
 const potProgress_1 = require("../potProgress");
 async function getPotById(potId) {
     try {
