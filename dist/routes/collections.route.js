@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.collectionsRouter = void 0;
+const controllers_1 = require("../controllers");
+const express_1 = require("express");
+const router = (0, express_1.Router)();
+router.get("/collection/:collectionId", controllers_1.collectionsController.getCollectionById);
+router.get("/collection/:userId", controllers_1.collectionsController.getCollectionByUserId);
+router.post("/collection", controllers_1.collectionsController.createCollection);
+router.delete("/collection/:collectionId", controllers_1.collectionsController.deleteCollectionById);
+exports.collectionsRouter = router;
