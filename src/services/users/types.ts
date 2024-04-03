@@ -1,4 +1,4 @@
-import * as z from 'zod';
+import * as z from "zod";
 
 const AddUserSchema = z.object({
     name: z.string(),

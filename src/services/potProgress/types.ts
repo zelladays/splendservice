@@ -1,4 +1,4 @@
-import zod from 'zod'
+import zod from "zod";
 
 const AddPotProgressSchema = zod.object({
     savingGoal: zod.number(),

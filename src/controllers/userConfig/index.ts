@@ -1,1 +1,1 @@
-export * from './userConfig.controller'
+export * from "./userConfig.controller";

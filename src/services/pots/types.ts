@@ -1,4 +1,4 @@
-import zod from 'zod'
+import zod from "zod";
 
 const AddPotSchema = zod.object({
     title: zod.string(),

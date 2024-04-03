@@ -1,2 +1,2 @@
-export * from './types';
-export * from './potProgress.service';
+export * from "./types";
+export * from "./potProgress.service";

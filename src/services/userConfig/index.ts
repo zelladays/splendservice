@@ -1,2 +1,2 @@
-export * from './types';
-export * from './userConfig.service';
+export * from "./types";
+export * from "./userConfig.service";
