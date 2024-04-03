@@ -11,6 +11,10 @@ dotenv_1.default.config();
 const router = (0, express_1.Router)();
 const oAuth2Client = new google_auth_library_1.OAuth2Client(process.env.OAUTH_CLIENT_ID, process.env.OAUTH_CLIENT_SECRET, "postmessage");
 router.post("/auth", async (req, res) => {
+    if (!req.body.code) {
+        res.status(400).send({ message: "Code not provided" });
+        return;
+    }
     const { tokens } = await oAuth2Client.getToken(req.body.code);
     if (!tokens.id_token) {
         res.status(401).send({ message: "Authentication failed." });

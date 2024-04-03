@@ -13,6 +13,11 @@ const oAuth2Client = new OAuth2Client(
 );
 
 router.post("/auth", async (req, res) => {
+  if (!req.body.code) {
+    res.status(400).send({ message: "Code not provided" });
+    return;
+  }
+
   const { tokens } = await oAuth2Client.getToken(req.body.code);
 
   if (!tokens.id_token) {
