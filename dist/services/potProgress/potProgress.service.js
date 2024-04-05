@@ -21,6 +21,19 @@ const createPotProgress = async (potProgress) => {
         throw error;
     }
 };
+const updatePotProgress = async (potProgress) => {
+    try {
+        await db_service_1.default.query("UPDATE pot_progress SET saving_goal = $1, amount_saved_per_interval = $2 WHERE id = $3", [
+            potProgress.savingGoal,
+            potProgress.amountSavedPerInterval,
+            potProgress.id,
+        ]);
+    }
+    catch (error) {
+        console.error("Error updating pot progress:", error);
+        throw error;
+    }
+};
 const getPotProgressById = async (potProgressId) => {
     try {
         const potProgress = await db_service_1.default.query("SELECT * FROM pot_progress WHERE id = $1", [potProgressId]);
@@ -45,4 +58,5 @@ exports.potProgressService = {
     createPotProgress,
     getPotProgressById,
     getAllPotProgress,
+    updatePotProgress,
 };

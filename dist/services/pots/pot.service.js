@@ -34,7 +34,14 @@ async function createPot(pot) {
             savingGoal: pot.savingGoal,
             amountSavedPerInterval: pot.amountSavedPerInterval,
         });
-        await db_service_1.default.query("INSERT INTO pots (id, title, description, user_id, pot_progress_id) VALUES ($1, $2, $3, $4, $5)", [potId, pot.title, pot.description, pot.userId, potProgressId]);
+        await db_service_1.default.query("INSERT INTO pots (id, title, description, user_id, pot_progress_id, last_modified_timestamp) VALUES ($1, $2, $3, $4, $5)", [
+            potId,
+            pot.title,
+            pot.description,
+            pot.userId,
+            potProgressId,
+            Math.floor(Date.now() / 1000),
+        ]);
         return { potId };
     }
     catch (error) {
@@ -42,8 +49,29 @@ async function createPot(pot) {
         throw error;
     }
 }
+const updatePot = async (pot) => {
+    try {
+        await potProgress_1.potProgressService.updatePotProgress({
+            id: pot.potProgressId,
+            savingGoal: pot.savingGoal,
+            amountSavedPerInterval: pot.amountSavedPerInterval,
+        });
+        await db_service_1.default.query("UPDATE pots SET title = $1, description = $2, pot_progress_id = $3, last_modified_timestamp = $4 WHERE id = $5", [
+            pot.title,
+            pot.description,
+            pot.potProgressId,
+            Math.floor(Date.now() / 1000),
+            pot.id,
+        ]);
+    }
+    catch (error) {
+        console.error("Error updating pot:", error);
+        throw error;
+    }
+};
 exports.potService = {
     getPotsByUserId,
     getPotById,
     createPot,
+    updatePot,
 };

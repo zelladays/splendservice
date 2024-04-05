@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import db from "../../configs/db.service";
-import { AddPotProgress } from "./types";
+import { AddPotProgress, PotProgress } from "./types";
 
 const createPotProgress = async (potProgress: AddPotProgress) => {
   try {
@@ -16,6 +16,22 @@ const createPotProgress = async (potProgress: AddPotProgress) => {
     return { potProgressId };
   } catch (error) {
     console.error("Error creating pot progress:", error);
+    throw error;
+  }
+};
+
+const updatePotProgress = async (potProgress: PotProgress) => {
+  try {
+    await db.query(
+      "UPDATE pot_progress SET saving_goal = $1, amount_saved_per_interval = $2 WHERE id = $3",
+      [
+        potProgress.savingGoal,
+        potProgress.amountSavedPerInterval,
+        potProgress.id,
+      ]
+    );
+  } catch (error) {
+    console.error("Error updating pot progress:", error);
     throw error;
   }
 };
@@ -47,4 +63,5 @@ export const potProgressService = {
   createPotProgress,
   getPotProgressById,
   getAllPotProgress,
+  updatePotProgress,
 };

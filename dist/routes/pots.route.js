@@ -10,5 +10,6 @@ const router = express_1.default.Router();
 router.get("/pots", controllers_1.potsController.getPots);
 router.get("/pots/:userId", controllers_1.potsController.getPotsByUserId);
 router.get("/pots/:potId", controllers_1.potsController.getPotById);
+router.put("/pots/:potId", controllers_1.potsController.updateExistingPot);
 router.post("/pots", controllers_1.potsController.createNewPot);
 exports.potsRouter = router;
