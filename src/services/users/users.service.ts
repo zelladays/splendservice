@@ -23,6 +23,11 @@ async function getUserByEmail(userEmail: string) {
     const user = await db.query('SELECT * FROM "users" WHERE email = $1', [
       userEmail,
     ]);
+
+    if (user.rows.length === 0) {
+      return null;
+    }
+
     return userMapper.from(user.rows[0] as User);
   } catch (error) {
     console.error("Error retrieving user:", error);
@@ -33,7 +38,7 @@ async function getUserByEmail(userEmail: string) {
 async function getAllUsers() {
   try {
     const users = await db.query("SELECT * FROM users", []);
-    return users.rows as User[];
+    return users.rows.map((row) => userMapper.from(row as User));
   } catch (error) {
     console.error("Error retrieving users:", error);
     throw error;

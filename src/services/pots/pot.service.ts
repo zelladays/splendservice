@@ -1,6 +1,6 @@
 import { v4 } from "uuid";
 import db from "../../configs/db.service";
-import { AddPot, Pot, UpdatePot } from "./types";
+import { AddPot, DBPot, Pot, potMapper, UpdatePot } from "./types";
 import { potProgressService } from "../potProgress";
 
 async function getPotById(potId: string, userId: string) {
@@ -9,7 +9,12 @@ async function getPotById(potId: string, userId: string) {
       "SELECT * FROM pots WHERE id = $1 AND user_id = $2",
       [potId, userId]
     );
-    return pot.rows[0] as Pot;
+
+    if (pot.rows.length === 0) {
+      return null;
+    }
+
+    return potMapper.from(pot.rows[0] as DBPot);
   } catch (error) {
     console.error("Error retrieving pot:", error);
     throw error;
@@ -19,11 +24,11 @@ async function getPotById(potId: string, userId: string) {
 async function getPotsByUserId(userId: string) {
   try {
     const { rows } = await db.query(
-      "SELECT pots.id FROM pots JOIN users ON pots.user_id = users.id WHERE users.id = $1",
+      "SELECT pots.id, pots.title, pots.last_modified_timestamp, pots.collection_id, pot_progress.saving_goal, pot_progress.current_amount, pot_progress.amount_saved_per_interval FROM pots JOIN users ON pots.user_id = users.id JOIN pot_progress ON pots.pot_progress_id = pot_progress.id WHERE users.id = $1",
       [userId]
     );
 
-    return rows as Pot[];
+    return rows.map((row) => potMapper.from(row as DBPot));
   } catch (error) {
     console.error("Error retrieving pots:", error);
     throw error;

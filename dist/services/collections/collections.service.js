@@ -40,6 +40,9 @@ const getCollectionByUserId = async (userId) => {
 const getCollectionById = async (collectionId) => {
     try {
         const collection = await db_service_1.default.query("SELECT * FROM collections WHERE id = $1", [collectionId]);
+        if (collection.rows.length === 0) {
+            return null;
+        }
         return collection.rows[0];
     }
     catch (error) {

@@ -40,6 +40,11 @@ async function getUserConfigById(configId: string) {
     const config = await db.query("SELECT * FROM user_config WHERE id = $1", [
       configId,
     ]);
+
+    if (config.rows.length === 0) {
+      return null;
+    }
+
     return userConfigMapper.from(config.rows[0] as UserConfig);
   } catch (error) {
     console.error("Error retrieving config:", error);

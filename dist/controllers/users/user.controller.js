@@ -29,12 +29,6 @@ const getUserByEmail = async (req, res) => {
             return;
         }
         const user = await services_1.usersService.getUserByEmail(userEmail);
-        if (!user) {
-            res.status(404).send({
-                errorMessage: "User not found.",
-            });
-            return;
-        }
         res.status(200).json(user);
     }
     catch (error) {

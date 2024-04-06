@@ -12,8 +12,8 @@ const oAuth2Client = new OAuth2Client(
 
 export const userAuthenticationMiddleware = async (
   req: Request,
-  res: Response,
-  next: NextFunction
+  res?: Response,
+  next?: NextFunction
 ) => {
   try {
     const token = req.cookies["SPLEND_AUTH_TOKEN"];
@@ -41,9 +41,9 @@ export const userAuthenticationMiddleware = async (
     req.userContext = req.userContext || {};
     req.userContext.userEmail = email;
 
-    next();
+    next?.();
   } catch (error) {
     console.error("Error in addEmailToRequest middleware:", error);
-    res.status(401).json({ error: `Unauthorized: ${error}` });
+    res?.status(401).json({ error: `Unauthorized: ${error}` });
   }
 };

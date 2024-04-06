@@ -45,6 +45,11 @@ const getCollectionById = async (collectionId: string) => {
       "SELECT * FROM collections WHERE id = $1",
       [collectionId]
     );
+
+    if (collection.rows.length === 0) {
+      return null;
+    }
+
     return collection.rows[0];
   } catch (error) {
     console.error("Error retrieving collection:", error);

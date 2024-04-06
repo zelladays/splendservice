@@ -25,6 +25,9 @@ async function getUserByEmail(userEmail) {
         const user = await db_service_1.default.query('SELECT * FROM "users" WHERE email = $1', [
             userEmail,
         ]);
+        if (user.rows.length === 0) {
+            return null;
+        }
         return types_1.userMapper.from(user.rows[0]);
     }
     catch (error) {
@@ -35,7 +38,7 @@ async function getUserByEmail(userEmail) {
 async function getAllUsers() {
     try {
         const users = await db_service_1.default.query("SELECT * FROM users", []);
-        return users.rows;
+        return users.rows.map((row) => types_1.userMapper.from(row));
     }
     catch (error) {
         console.error("Error retrieving users:", error);

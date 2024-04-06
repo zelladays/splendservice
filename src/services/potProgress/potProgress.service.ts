@@ -42,6 +42,11 @@ const getPotProgressById = async (potProgressId: string) => {
       "SELECT * FROM pot_progress WHERE id = $1",
       [potProgressId]
     );
+
+    if (potProgress.rows.length === 0) {
+      return null;
+    }
+
     return potProgress.rows[0];
   } catch (error) {
     console.error("Error retrieving pot progress:", error);

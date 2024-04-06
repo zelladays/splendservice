@@ -6,11 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.potService = void 0;
 const uuid_1 = require("uuid");
 const db_service_1 = __importDefault(require("../../configs/db.service"));
+const types_1 = require("./types");
 const potProgress_1 = require("../potProgress");
 async function getPotById(potId, userId) {
     try {
         const pot = await db_service_1.default.query("SELECT * FROM pots WHERE id = $1 AND user_id = $2", [potId, userId]);
-        return pot.rows[0];
+        if (pot.rows.length === 0) {
+            return null;
+        }
+        return types_1.potMapper.from(pot.rows[0]);
     }
     catch (error) {
         console.error("Error retrieving pot:", error);
@@ -19,8 +23,8 @@ async function getPotById(potId, userId) {
 }
 async function getPotsByUserId(userId) {
     try {
-        const { rows } = await db_service_1.default.query("SELECT pots.id FROM pots JOIN users ON pots.user_id = users.id WHERE users.id = $1", [userId]);
-        return rows;
+        const { rows } = await db_service_1.default.query("SELECT pots.id, pots.title, pots.last_modified_timestamp, pots.collection_id, pot_progress.saving_goal, pot_progress.current_amount, pot_progress.amount_saved_per_interval FROM pots JOIN users ON pots.user_id = users.id JOIN pot_progress ON pots.pot_progress_id = pot_progress.id WHERE users.id = $1", [userId]);
+        return rows.map((row) => types_1.potMapper.from(row));
     }
     catch (error) {
         console.error("Error retrieving pots:", error);

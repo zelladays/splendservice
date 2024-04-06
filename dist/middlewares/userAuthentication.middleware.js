@@ -28,11 +28,11 @@ const userAuthenticationMiddleware = async (req, res, next) => {
         const email = payload.email;
         req.userContext = req.userContext || {};
         req.userContext.userEmail = email;
-        next();
+        next?.();
     }
     catch (error) {
         console.error("Error in addEmailToRequest middleware:", error);
-        res.status(401).json({ error: `Unauthorized: ${error}` });
+        res?.status(401).json({ error: `Unauthorized: ${error}` });
     }
 };
 exports.userAuthenticationMiddleware = userAuthenticationMiddleware;

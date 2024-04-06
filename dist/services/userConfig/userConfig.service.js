@@ -39,6 +39,9 @@ async function getUserConfigById(configId) {
         const config = await db_service_1.default.query("SELECT * FROM user_config WHERE id = $1", [
             configId,
         ]);
+        if (config.rows.length === 0) {
+            return null;
+        }
         return types_1.userConfigMapper.from(config.rows[0]);
     }
     catch (error) {

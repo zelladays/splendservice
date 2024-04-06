@@ -33,13 +33,6 @@ const getUserByEmail = async (req: Request, res: Response) => {
 
     const user = await usersService.getUserByEmail(userEmail);
 
-    if (!user) {
-      res.status(404).send({
-        errorMessage: "User not found.",
-      });
-      return;
-    }
-
     res.status(200).json(user);
   } catch (error) {
     res.status(500).send({

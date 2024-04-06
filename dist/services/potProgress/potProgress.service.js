@@ -37,6 +37,9 @@ const updatePotProgress = async (potProgress) => {
 const getPotProgressById = async (potProgressId) => {
     try {
         const potProgress = await db_service_1.default.query("SELECT * FROM pot_progress WHERE id = $1", [potProgressId]);
+        if (potProgress.rows.length === 0) {
+            return null;
+        }
         return potProgress.rows[0];
     }
     catch (error) {
