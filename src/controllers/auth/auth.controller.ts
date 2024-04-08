@@ -78,7 +78,6 @@ const verify = async (req: Request, res: Response) => {
   const token = req.cookies.SPLEND_AUTH_TOKEN;
 
   if (!token) {
-    res.clearCookie("SPLEND_AUTH_TOKEN");
     res.status(401).json({ message: "User not authenticated" });
     return;
   }
@@ -89,6 +88,7 @@ const verify = async (req: Request, res: Response) => {
     });
 
     if (!ticket) {
+      res.clearCookie("SPLEND_AUTH_TOKEN");
       res.status(401).json({ message: "Invalid token" });
       return;
     }
@@ -96,6 +96,7 @@ const verify = async (req: Request, res: Response) => {
     const payload = ticket.getPayload();
 
     if (!payload) {
+      res.clearCookie("SPLEND_AUTH_TOKEN");
       res.status(401).json({ message: "Invalid token" });
       return;
     }
@@ -107,6 +108,7 @@ const verify = async (req: Request, res: Response) => {
 
     res.status(200).send({ authState: null });
   } catch (error) {
+    res.clearCookie("SPLEND_AUTH_TOKEN");
     res.status(401).json({ message: "Invalid token" });
     return;
   }
