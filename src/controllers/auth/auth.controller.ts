@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import dotenv from "dotenv";
-import { OAuth2Client } from "google-auth-library";
+import { LoginTicket, OAuth2Client } from "google-auth-library";
 import { userAuthenticationMiddleware } from "../../middlewares";
 import { usersService } from "../../services";
 
@@ -70,17 +70,27 @@ const authenticate = async (req: Request, res: Response) => {
 };
 
 const verify = async (req: Request, res: Response) => {
+  let ticket: LoginTicket | null = null;
   const token = req.cookies.SPLEND_AUTH_TOKEN;
 
   if (!token) {
     res.status(401).json({ message: "User not authenticated" });
     return;
   }
+  try {
+    ticket = await oAuth2Client.verifyIdToken({
+      idToken: token,
+      audience: process.env.OAUTH_CLIENT_ID,
+    });
+  } catch (error) {
+    res.status(401).json({ message: "Invalid token" });
+    return;
+  }
 
-  const ticket = await oAuth2Client.verifyIdToken({
-    idToken: token,
-    audience: process.env.OAUTH_CLIENT_ID,
-  });
+  if (!ticket) {
+    res.status(401).json({ message: "Invalid token" });
+    return;
+  }
 
   const payload = ticket.getPayload();
 
