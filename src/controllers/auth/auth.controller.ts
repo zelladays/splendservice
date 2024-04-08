@@ -49,62 +49,67 @@ const authenticate = async (req: Request, res: Response) => {
     return;
   }
 
-  const { tokens } = await oAuth2Client.getToken(req.body.code);
+  try {
+    const { tokens } = await oAuth2Client.getToken(req.body.code);
 
-  if (!tokens.id_token) {
+    if (!tokens.id_token) {
+      res.status(401).json({ message: "Authentication failed." });
+      return;
+    }
+
+    res.cookie("SPLEND_AUTH_TOKEN", tokens.id_token, {
+      sameSite: "none",
+      secure: true,
+    });
+
+    if (await assertAuthenticated(req)) {
+      res.status(200).json({ authState: "ONBOARDED" });
+      return;
+    }
+
+    res.status(200).json({ authState: "NOT_ONBOARDED" });
+  } catch (error) {
     res.status(401).json({ message: "Authentication failed." });
     return;
   }
-
-  res.cookie("SPLEND_AUTH_TOKEN", tokens.id_token, {
-    sameSite: "none",
-    secure: true,
-  });
-
-  if (await assertAuthenticated(req)) {
-    res.status(200).json({ authState: "ONBOARDED" });
-    return;
-  }
-
-  res.status(200).json({ authState: "NOT_ONBOARDED" });
 };
 
 const verify = async (req: Request, res: Response) => {
-  let ticket: LoginTicket | null = null;
   const token = req.cookies.SPLEND_AUTH_TOKEN;
 
   if (!token) {
+    res.clearCookie("SPLEND_AUTH_TOKEN");
     res.status(401).json({ message: "User not authenticated" });
     return;
   }
   try {
-    ticket = await oAuth2Client.verifyIdToken({
+    const ticket = await oAuth2Client.verifyIdToken({
       idToken: token,
       audience: process.env.OAUTH_CLIENT_ID,
     });
+
+    if (!ticket) {
+      res.status(401).json({ message: "Invalid token" });
+      return;
+    }
+
+    const payload = ticket.getPayload();
+
+    if (!payload) {
+      res.status(401).json({ message: "Invalid token" });
+      return;
+    }
+
+    if (await assertAuthenticated(req)) {
+      res.status(200).send({ authState: "LOGGED_IN" });
+      return;
+    }
+
+    res.status(200).send({ authState: null });
   } catch (error) {
     res.status(401).json({ message: "Invalid token" });
     return;
   }
-
-  if (!ticket) {
-    res.status(401).json({ message: "Invalid token" });
-    return;
-  }
-
-  const payload = ticket.getPayload();
-
-  if (!payload) {
-    res.status(401).json({ message: "Invalid token" });
-    return;
-  }
-
-  if (await assertAuthenticated(req)) {
-    res.status(200).send({ authState: "LOGGED_IN" });
-    return;
-  }
-
-  res.status(200).send({ authState: null });
 };
 
 export const authController = {
